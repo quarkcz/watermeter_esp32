@@ -1,0 +1,1 @@
+{"vodomer_id":"10001","counter":50,"cDBAPIURLBase":"https://your-server.com/sensor/sensor-data.php","cDBAPISensorValueName":"sensor_value","cDBAPISenrodAdditional":"sensor_additional","cDBAPISensorGMT":"dt_gmt","cDBAPISensorSendKey":"","cDBAPISensorSendKeyAttrName":"sensor_key","cDBAPISensorSensorIDAttrName":"sensor_id"}

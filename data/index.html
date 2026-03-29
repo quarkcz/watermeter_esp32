@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="utf-8" />
+    <title>Quark's vodoměr</title>
+    <link rel="stylesheet" href="assets/vodomer.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Quark's vodoměr</h1>
+
+        <!-- === Sekce stavů === -->
+        <div class="status-panel">
+            <div class="status-item">
+                <div class="status-content">
+                    <label>Číslo vodoměru:</label>
+                    <span id="vodomer_id">Načítám...</span>
+                </div>
+            </div>
+            <div class="status-item with-icon">
+                <div class="status-content">
+                    <label>Počet impulsů:</label>
+                    <span id="counter">Načítám...</span>
+                </div>
+                <button id="edit-counter" class="edit-trigger" data-param="counter" data-label="Počet impulsů" data-type="number">✏️</button>
+            </div>
+        </div>
+
+        <!-- === Sekce API parametrů === -->
+        <h2>Parametry webového API</h2>
+        <div class="status-panel" id="api-params">
+
+            <div class="status-item with-icon">
+                <div class="status-content">
+                    <label>Základní URL pro API:</label>
+                    <span id="cDBAPIURLBase">Načítám...</span>
+                </div>
+                <button class="edit-trigger" data-param="cDBAPIURLBase" data-label="Základní URL pro API" data-type="text">✏️</button>
+            </div>
+
+            <div class="status-item with-icon">
+                <div class="status-content">
+                    <label>API klíč:</label>
+                    <span id="cDBAPISensorSendKey">Načítám...</span>
+                </div>
+                <button class="edit-trigger" data-param="cDBAPISensorSendKey" data-label="API klíč" data-type="text">✏️</button>
+            </div>
+
+            <div class="status-item with-icon">
+                <div class="status-content">
+                    <label>Jméno parametru pro počet pulsů:</label>
+                    <span id="cDBAPISensorValueName">Načítám...</span>
+                </div>
+                <button class="edit-trigger" data-param="cDBAPISensorValueName" data-label="Jméno parametru pro počet pulsů" data-type="text">✏️</button>
+            </div>
+
+            <div class="status-item with-icon">
+                <div class="status-content">
+                    <label>Jméno parametru pro doplňková data:</label>
+                    <span id="cDBAPISenrodAdditional">Načítám...</span>
+                </div>
+                <button class="edit-trigger" data-param="cDBAPISenrodAdditional" data-label="Jméno parametru pro doplňková data" data-type="text">✏️</button>
+            </div>
+
+            <div class="status-item with-icon">
+                <div class="status-content">
+                    <label>Jméno parametru pro GMT čas:</label>
+                    <span id="cDBAPISensorGMT">Načítám...</span>
+                </div>
+                <button class="edit-trigger" data-param="cDBAPISensorGMT" data-label="Jméno parametru pro GMT čas" data-type="text">✏️</button>
+            </div>
+
+            <div class="status-item with-icon">
+                <div class="status-content">
+                    <label>Jméno parametru pro API klíč:</label>
+                    <span id="cDBAPISensorSendKeyAttrName">Načítám...</span>
+                </div>
+                <button class="edit-trigger" data-param="cDBAPISensorSendKeyAttrName" data-label="Jméno parametru pro API klíč" data-type="text">✏️</button>
+            </div>
+
+            <div class="status-item with-icon">
+                <div class="status-content">
+                    <label>Jméno parametru pro ID senzoru:</label>
+                    <span id="cDBAPISensorSensorIDAttrName">Načítám...</span>
+                </div>
+                <button class="edit-trigger" data-param="cDBAPISensorSensorIDAttrName" data-label="Jméno parametru pro ID senzoru" data-type="text">✏️</button>
+            </div>
+        </div>
+
+        <!-- === Odkazy === -->
+        <div class="links">
+            <a href="/wifi" class="btn">WiFi Configuration Panel</a>
+            <a href="/api/wifi/status" class="btn">WiFi Status (JSON API)</a>
+            <a href="/api/wifi/configlist" class="btn">Saved Networks (JSON API)</a>
+        </div>
+
+        <footer>
+            <hr>
+            <p><small>ESP32 C3 vodoměr - (c) 2025 by Karel Quast</small></p>
+        </footer>
+    </div>
+
+    <script>
+    const apiBase = "";
+
+    async function loadStatus() {
+        try {
+            const res = await fetch(`${apiBase}api/status`);
+            const data = await res.json();
+            for (const key in data) {
+                const el = document.getElementById(key);
+                if (el) el.textContent = (data[key] !== null && data[key] !== undefined) ? data[key] : "";
+            }
+        } catch {
+            document.querySelectorAll('.status-content span').forEach(el => el.textContent = 'Chyba');
+        }
+    }
+
+    async function setParam(name, value) {
+        try {
+            const res = await fetch(`${apiBase}/api/setparam?name=${encodeURIComponent(name)}&value=${encodeURIComponent(value)}`);
+            const txt = await res.text();
+            alert(txt);
+            loadStatus();
+        } catch {
+            alert("Chyba při volání API!");
+        }
+    }
+
+    function attachEditHandlers() {
+        document.querySelectorAll('.edit-trigger').forEach(btn => {
+            btn.onclick = () => {
+                const param = btn.dataset.param;
+                const label = btn.dataset.label || param;
+                const inputType = btn.dataset.type || "text";
+                const span = document.getElementById(param);
+                const currentVal = span.textContent.trim();
+
+                const input = document.createElement('input');
+                input.type = inputType;
+                input.value = currentVal;
+                input.className = inputType === "number" ? 'edit-input-number' : 'edit-input';
+
+                const actions = document.createElement('div');
+                actions.className = 'edit-actions';
+
+                const okBtn = document.createElement('button');
+                okBtn.textContent = '✅';
+                okBtn.className = 'edit-action';
+
+                const cancelBtn = document.createElement('button');
+                cancelBtn.textContent = '❌';
+                cancelBtn.className = 'edit-action';
+
+                actions.appendChild(okBtn);
+                actions.appendChild(cancelBtn);
+
+                span.replaceWith(input);
+                btn.replaceWith(actions);
+                input.focus();
+
+                // Enter = potvrzení, Esc = zrušení
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') okBtn.click();
+                    else if (e.key === 'Escape') cancelBtn.click();
+                });
+
+                okBtn.onclick = async () => {
+                    const newVal = input.value.trim();
+                    if (inputType === "number" && isNaN(newVal)) {
+                        alert("Zadej číslo!");
+                        return;
+                    }
+                    const confirmMsg = `Opravdu chceš nastavit "${label}" na: ${newVal}?`;
+                    if (!confirm(confirmMsg)) {
+                        restore(currentVal);
+                        return;
+                    }
+                    await setParam(param, newVal);
+                    restore(newVal);
+                };
+
+                cancelBtn.onclick = () => restore(currentVal);
+
+                function restore(val) {
+                    const newSpan = document.createElement('span');
+                    newSpan.id = param;
+                    newSpan.textContent = val;
+                    input.replaceWith(newSpan);
+                    actions.replaceWith(btn);
+                    attachEditHandlers();
+                }
+            };
+        });
+    }
+
+    loadStatus();
+    setInterval(loadStatus, 5000);
+    attachEditHandlers();
+    </script>
+</body>
+</html>

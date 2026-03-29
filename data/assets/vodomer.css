@@ -1,0 +1,162 @@
+body {
+    font-family: "Segoe UI", Roboto, sans-serif;
+    background: #f3f6fa;
+    color: #222;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 30px 40px;
+}
+
+h1 {
+    text-align: center;
+    color: #0057b7;
+    margin-bottom: 25px;
+}
+
+h2 {
+    color: #0057b7;
+    font-size: 1.2em;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+/* === Status panel === */
+.status-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.status-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #eef3f8;
+    border-radius: 8px;
+    padding: 10px 16px;
+    width: calc(100% - 60px);
+    box-sizing: border-box;
+}
+
+.status-content label {
+    font-weight: bold;
+}
+
+.status-content span,
+.status-content input {
+    width: 300px;
+    text-align: right;
+    font-family: monospace;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* --- Číselný vstup --- */
+.edit-input-number {
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    padding: 4px 6px;
+    font-size: 1em;
+    width: 100px; /* užší než stringy */
+    text-align: right;
+    font-family: monospace;
+}
+
+/* --- Textový vstup --- */
+.edit-input {
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    padding: 5px 8px;
+    font-size: 1em;
+    width: 300px;
+    text-align: right;
+    font-family: monospace;
+}
+
+/* === Tužka === */
+.with-icon > .edit-trigger {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.3em;
+    transition: transform 0.1s ease;
+}
+
+.with-icon > .edit-trigger:hover {
+    transform: translateY(-50%) scale(1.2);
+}
+
+/* === Kontejner na ✅ a ❌ === */
+.edit-actions {
+    position: absolute;
+    right: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.edit-action {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.4em;
+    line-height: 1;
+    padding: 0;
+    transition: transform 0.1s ease;
+}
+
+.edit-action:hover {
+    transform: scale(1.2);
+}
+
+/* === Odkazy === */
+.links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn {
+    display: block;
+    text-align: center;
+    background: #0057b7;
+    color: white;
+    padding: 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+    font-size: 1em;
+}
+
+.btn:hover {
+    background: #003e82;
+}
+
+/* === Patička === */
+footer {
+    text-align: center;
+    margin-top: 35px;
+    color: #666;
+}
