@@ -104,5 +104,9 @@ rest:
           - spotreba_24h
 ```
 
+HA dashboard example:
+
+![Home Assistant dashboard example](docs/ha-dashboard.png)
+
 ## Final words
 I know, architecture could be simpler, as I wrote at the beginning, this has it's historical reason. If you would have time to write PHP script to return JSON like python script does, feel free to contact me, I'd be happy to skip Python part and add your script here with attribution :-)
